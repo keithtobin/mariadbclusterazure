@@ -29,7 +29,7 @@ mysql --user=root --password=rootpass -e "GRANT ALL PRIVILEGES ON *.* TO '$dbuse
 
 service mysql stop
 
-wget https://raw.githubusercontent.com/keithtobin/mariadbazure/master/galera.cnf -O /etc/mysql/conf.d/galera.cnf
+wget https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/conf/galera.cnf -O /etc/mysql/conf.d/galera.cnf
 
 service mysql start --wsrep-new-cluster
 

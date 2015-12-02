@@ -38,6 +38,7 @@
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Scripts\deploytoazure.ps1" />
     <None Include="Templates\MariaDBCluster.json" />
     <None Include="Tools\AzCopy.exe" />
     <None Include="Tools\Microsoft.Data.Edm.dll">
