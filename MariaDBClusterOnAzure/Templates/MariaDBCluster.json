@@ -435,7 +435,7 @@
                 "typeHandlerVersion": "1.2",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/keithtobin/mariadbazure/master/cloudinit1"
+                        "https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/cloudinit1.bash"
                     ],
                     "commandToExecute": "[concat('/bin/bash cloudinit1 ', variables('dbUser'), ' ' , variables('dbPass'))]"
                 }
@@ -455,7 +455,7 @@
                 "typeHandlerVersion": "1.2",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/keithtobin/mariadbazure/master/cloudinit2"
+                        "https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/cloudinit2.bash"
                     ],
                     "commandToExecute": "[concat('/bin/bash cloudinit2 ', variables('dbUser'), ' ' , variables('dbPass'))]"
                 }
@@ -475,7 +475,7 @@
                 "typeHandlerVersion": "1.2",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/keithtobin/mariadbazure/master/cloudinit3"
+                        "https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/cloudinit3.bash"
                     ],
 					"commandToExecute": "[concat('/bin/bash cloudinit3 ', variables('dbUser'), ' ' , variables('dbPass'))]"
                 }

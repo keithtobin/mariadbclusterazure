@@ -28,6 +28,10 @@
     <Folder Include="Tools\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bash\cloudinit1.bash" />
+    <None Include="bash\cloudinit2.bash" />
+    <None Include="bash\cloudinit3.bash" />
+    <None Include="conf\galera.cnf" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
