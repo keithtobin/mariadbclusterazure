@@ -17,6 +17,7 @@ apt-get update
 
 export DEBIAN_FRONTEND=noninteractive
 
+
 debconf-set-selections <<< "mariadb-server-10.0 mysql-server/root_password password $dbpass"
 
 debconf-set-selections <<< "mariadb-server-10.0 mysql-server/root_password_again password $dbpass"
