@@ -1,4 +1,5 @@
-﻿{
+﻿
+{
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
@@ -8,28 +9,34 @@
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
+	"deploymentID": {
+      "type": "string",
+      "metadata": {
+        "description": "This is the id of the deployment, it is added to the name of global resources to make then unique so you can the template can be used to deploy multipal times"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
         "description": "User name for the Virtual Machine."
       }
     },
-	 "deploymentID": {
-      "type": "string",
-      "metadata": {
-        "description": "This is the id of the deployment, it is used to create rsource prefix"
-      }
-    },
-    "adminPassword": {
+	 "adminPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
     },
-    "dnsNameForPublicIP": {
+	 "mysqlAdminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+        "description": "User name for the MySQL cluster."
+      }
+    },
+	 "mysqlAdminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the MySQL cluster."
       }
     },
     "ubuntuOSVersion": {
@@ -41,7 +48,7 @@
         "15.04"
       ],
       "metadata": {
-        "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version. Allowed values: 12.04.5-LTS, 14.04.2-LTS, 15.04."
+        "description": "This ARM template will deploy a 3 node MariaDB cluster."
       }
     }
   },
@@ -49,43 +56,34 @@
     "location": "West US",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
-    "OSDiskName": "osdiskforlinuxsimple",
-    "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
-    "subnetName": "Subnet",
+    "subnetName": "mariadbsubnet",
     "subnetPrefix": "10.0.0.0/24",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "MyUbuntuVM",
     "vmSize": "Standard_D1",
-    "virtualNetworkName": "MyVNET",
+    "virtualNetworkName": "mariadbnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-	"vmName01": "controller01",
-	"vmName02": "controller02",
-	"vmName03": "controller03",
-	"vmAdminUser": "keith",
-	"vmAdminPass": "Cathy123@",
-	"vmOSDiskName01": "osdiskforlinuxsimple01",
-	"vmOSDiskName02": "osdiskforlinuxsimple02",
-	"vmOSDiskName03": "osdiskforlinuxsimple03",
+	"vmName01": "mysql01",
+	"vmName02": "mysql02",
+	"vmName03": "mysql03",
+	"vmOSDiskName01": "osdiskformariadbcluster01",
+	"vmOSDiskName02": "osdiskformariadbcluster02",
+	"vmOSDiskName03": "osdiskformariadbcluster03",
 	"vmNicName01": "Nic01",
 	"vmNicName02": "Nic02",
 	"vmNicName03": "Nic03",
-	"vmPublicIPAddressName01": "vmPublicIP01",
-	"vmPublicIPAddressName02": "vmPublicIP02",
-	"vmPublicIPAddressName03": "vmPublicIP03",
+	"vmPublicIPAddressName01": "publicip01",
+	"vmPublicIPAddressName02": "publicip02",
+	"vmPublicIPAddressName03": "publicip03",
 	"vmDnsNameForPublicIP01": "[concat(variables('vmName01'),parameters('deploymentID'))]",
 	"vmDnsNameForPublicIP02": "[concat(variables('vmName02'),parameters('deploymentID'))]",
 	"vmDnsNameForPublicIP03": "[concat(variables('vmName03'),parameters('deploymentID'))]",
-	"vmAvailibilitySet": "availabilitySet1",
+	"vmAvailibilitySet": "availabilityset01",
 	"loadBalancerName": "ktlbme",
-	"lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('loadBalancerName'))]",
-	"dbUser": "root",
-	"dbPass": "rootpass",
-	
+	"lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('loadBalancerName'))]",	
   },
   "resources": [
     {
@@ -435,9 +433,9 @@
                 "typeHandlerVersion": "1.2",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/bash/cloudinit1.bash"
+"https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/bash/cloudinit1.bash"
                     ],
-                    "commandToExecute": "[concat('/bin/bash cloudinit1 ', variables('dbUser'), ' ' , variables('dbPass'))]"
+                    "commandToExecute": "[concat('/bin/bash cloudinit1 ', parameters('mysqlAdminUsername'), ' ' , parameters('mysqlAdminPassword'))]"
                 }
             }
         },
@@ -455,9 +453,9 @@
                 "typeHandlerVersion": "1.2",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/bash/cloudinit2.bash"
+"https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/bash/cloudinit2.bash"
                     ],
-                    "commandToExecute": "[concat('/bin/bash cloudinit2 ', variables('dbUser'), ' ' , variables('dbPass'))]"
+                    "commandToExecute": "[concat('/bin/bash cloudinit2 ', parameters('mysqlAdminUsername'), ' ' , parameters('mysqlAdminPassword'))]"
                 }
             }
         },
@@ -475,9 +473,9 @@
                 "typeHandlerVersion": "1.2",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/bash/cloudinit3.bash"
+"https://raw.githubusercontent.com/keithtobin/mariadbclusterazure/master/MariaDBClusterOnAzure/bash/cloudinit3.bash"
                     ],
-					"commandToExecute": "[concat('/bin/bash cloudinit3 ', variables('dbUser'), ' ' , variables('dbPass'))]"
+					"commandToExecute": "[concat('/bin/bash cloudinit3 ', parameters('mysqlAdminUsername'), ' ' , parameters('mysqlAdminPassword'))]"
                 }
             }
         },
