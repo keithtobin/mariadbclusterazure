@@ -21,7 +21,7 @@ debconf-set-selections <<< "mariadb-server-10.0 mysql-server/root_password passw
 
 debconf-set-selections <<< "mariadb-server-10.0 mysql-server/root_password_again password $dbpass"
 
-DEBIAN_FRONTEND=noninteractive apt-get install -y rsync galera mariadb-galera-servercloudinit1
+DEBIAN_FRONTEND=noninteractive apt-get install -y rsync galera mariadb-galera-server
 
 
 mysql --user=root --password=rootpass -e "GRANT ALL PRIVILEGES ON *.* TO '$dbuser'@'10.0.0%' IDENTIFIED BY '$dbpass' WITH GRANT OPTION;"
