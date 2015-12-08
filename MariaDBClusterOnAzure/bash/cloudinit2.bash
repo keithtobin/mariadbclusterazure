@@ -7,6 +7,8 @@ exec &> >(tee -i /tmp/cloudinit.log 2>&1)
 dbuser=$1
 dbpass=$2
 
+apt-get update
+
 apt-get install python-software-properties
 
 apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
