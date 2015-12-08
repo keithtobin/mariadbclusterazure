@@ -1,5 +1,7 @@
 #!/bin/bash
 
+exit 0
+
 set -x
 
 exec &> >(tee -i /tmp/cloudinit.log 2>&1)
